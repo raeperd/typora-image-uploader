@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import logging
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from src.typora_argument_parser import TyporaArgumentParser
+from src.imgbb_uploader import ImgBBUploader
 
+logging.basicConfig()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    API_KEY = os.getenv("TYPORA_IMAGE_UPLOADER_API_KEY")
+    if not API_KEY:
+        logging.error(f"Must set ImgBB API-KEY to environment variable $TYPORA_IMAGE_UPLOADER_API_KEY")
+        exit()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print("parser")
+    parser = TyporaArgumentParser()
+    uploader = ImgBBUploader(API_KEY)
+
+    image_files = parser.parse()
+    results = []
+    for file in image_files:
+        print("uploading")
+        response = uploader.upload_image(file).json()
+        if 200 != response["status"]:
+            logging.error(f"Error uploading image {file} with {response}")
+            continue
+        results.append(response["data"]["url"])
+    for result in results:
+        print(result)

@@ -1,6 +1,7 @@
+from base64 import b64encode
 from pathlib import Path
 
-from requests import post
+from http.client import HTTPSConnection
 
 
 class ImgBBUploader:
@@ -9,12 +10,16 @@ class ImgBBUploader:
         self._api_key = api_key
 
     def upload_image(self, image_file: Path):
-        return post(self._address,
-                    data={"key": self._api_key, "name": image_file.stem},
-                    files={"image": image_file.read_bytes()})
+        connection = HTTPSConnection("api.imgbb.com")
+        connection.request("POST", f"/1/upload?key={self._api_key}&name={image_file.stem}",
+                           f"image={b64encode(image_file.read_bytes()).decode()}",
+                           headers={"Content-Type": "application/x-www-form-urlencoded"})
+        return connection.getresponse()
 
 
 if __name__ == '__main__':
-    uploader = ImgBBUploader("SOME_API_KEY")
-    response = uploader.upload_image(Path("../test/data/python.png").absolute())
-    print(response.json())
+    uploader = ImgBBUploader("6971909de89e85a80b325e0d30147f1a")
+    response = uploader.upload_image(
+        Path("../test/data/python.png").absolute())
+    print(response.read().decode())
+    print(response.headers)

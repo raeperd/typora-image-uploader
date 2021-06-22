@@ -15,26 +15,24 @@ Typora [ImgBB](https://api.imgbb.com/) uploader using [python3 requests](https:/
 ### Requirements
 
 - python3 
-- [python3 requests](https://docs.python-requests.org/en/master/) installed **NOT IN virtualenv** but in global pip
 - ImgBB API KEY 
-  - You can get this in [ImgBB API Reference](https://api.imgbb.com/))
-  - Set this value in environment value `$TYPORA_IMAGE_UPLOADER_API_KEY`
-  - Or you can hard code main.py with your key
-
+  - You can get this in [ImgBB API Reference](https://api.imgbb.com/)
+  - **Set your API KEY value in variable `API_KEY` in main.py script**
 
 
 ### Usage
 
-1. Clone this repository where you want (Assume C:/github)
+1. Download main.py in this repositories root, or clone it 
 ```shell script
 $ git clone https://github.com/raeperd/typora-image-uploader.git
 ```
-2. Open typora, File > Settings > Image
-3. Configure When Insert.. to `Upload image`
-4. Configure Image Upload Settings as follow (With your repository path)
+2. **Change `API_KEY` variable in main.py to your imgbb API KEY**
+3. Open typora, File > Settings > Image
+4. Configure When Insert.. to `Upload image`
+5. Configure Image Upload Settings as follow (With your repository path)
    - Image uploader => `Custom Command`
-   - Command => `python3 C:\github\typora-iamge-uploader/main.py`
-5. And click Test Uploader to verify your settings 
-
-
-
+   - Command => Specify python script path
+   - For Example
+     - On windows, `python3 C:\github\typora-iamge-uploader/main.py`
+     - On unix like systems, `python3 /home/your_user_name/main.py` 
+6. And click Test Uploader to verify your settings 

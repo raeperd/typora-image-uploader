@@ -18,7 +18,7 @@ class ImgBBUploader:
 
 
 if __name__ == '__main__':
-    uploader = ImgBBUploader("6971909de89e85a80b325e0d30147f1a")
+    uploader = ImgBBUploader("")
     response = uploader.upload_image(
         Path("../test/data/python.png").absolute())
     print(response.read().decode())
